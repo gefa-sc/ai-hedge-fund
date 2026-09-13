@@ -122,13 +122,13 @@ class CachedDataClient:
         if not path.exists():
             return None
         try:
-            return json.loads(path.read_text())
+            return json.loads(path.read_text(encoding="utf-8"))
         except (json.JSONDecodeError, OSError):
             return None  # corrupt entry -> miss; rewritten on fetch
 
     def _write(self, key: str, payload: dict) -> None:
         self._dir.mkdir(parents=True, exist_ok=True)
-        (self._dir / f"{key}.json").write_text(json.dumps(payload))
+        (self._dir / f"{key}.json").write_text(json.dumps(payload), encoding="utf-8")
 
     def _cached_list(self, method: str, model_cls, params: dict, fetch: Callable) -> list:
         key = self._key(method, params)
