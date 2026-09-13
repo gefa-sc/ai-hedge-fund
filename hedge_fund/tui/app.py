@@ -58,6 +58,7 @@ from textual.widgets.selection_list import Selection
 from hedge_fund.backtesting import FundBacktestResult, backtest_fund, rebalance_grid
 from hedge_fund.backtesting.fund import _PERIODS_PER_YEAR
 from hedge_fund.brokers import Fill, SimBroker
+from hedge_fund.clock import market_today
 from hedge_fund.data import CachedDataClient, FDClient
 from hedge_fund.fund import (
     Fund,
@@ -1099,7 +1100,7 @@ class RunScreen(Screen):
     def __init__(self, spec: FundSpec) -> None:
         super().__init__()
         self._spec = spec
-        self._as_of = _date.today().isoformat()
+        self._as_of = market_today().isoformat()
         self._phase = "ready"
         self._universe: list[str] = []
         self._record: CycleRecord | None = None
@@ -1698,7 +1699,7 @@ class BacktestScreen(Screen):
     def _begin_dates(self) -> None:
         assert self._spec is not None
         self._phase = "dates"
-        today = _date.today()
+        today = market_today()
         tickers = self.query_one("#bt-tickers", Input)
         start = self.query_one("#start-input", Input)
         end = self.query_one("#end-input", Input)

@@ -37,6 +37,7 @@ from rich.console import Console
 
 from hedge_fund.backtesting import backtest_fund
 from hedge_fund.brokers import SimBroker
+from hedge_fund.clock import market_today
 from hedge_fund.data import CachedDataClient, FDClient
 from hedge_fund.fund import Fund, load_spec, normalize_universe
 from hedge_fund.paths import ensure_mandates_dir
@@ -66,7 +67,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--date",
-        default=_date.today().isoformat(),
+        default=market_today().isoformat(),
         help="as-of date YYYY-MM-DD (default: today); models only see data "
         "filed by this date",
     )

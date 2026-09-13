@@ -32,6 +32,7 @@ from datetime import date, datetime, timedelta
 import numpy as np
 
 from hedge_fund.backtesting.models import BacktestResult, PerformanceMetrics, Trade
+from hedge_fund.clock import market_today
 from hedge_fund.data.protocol import DataClient
 from hedge_fund.signals.base import AlphaModel
 
@@ -110,7 +111,7 @@ class BacktestEngine:
         # Fetch the price series once. Pad the end so exits beyond end_date
         # still have a closing price to fill against.
         end_padded = (_parse_date(end_date) + timedelta(days=holding_days * 2 + 10)).isoformat()
-        today = date.today().isoformat()
+        today = market_today().isoformat()
         if end_padded > today:
             end_padded = today
 

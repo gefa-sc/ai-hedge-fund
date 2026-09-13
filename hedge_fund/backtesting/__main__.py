@@ -8,10 +8,10 @@ from __future__ import annotations
 import os
 import sys
 import time
-from datetime import date
 
-from hedge_fund.data import FDClient
 from hedge_fund.backtesting import BacktestEngine
+from hedge_fund.clock import market_today
+from hedge_fund.data import FDClient
 from hedge_fund.signals import PEADModel
 
 TICKERS = [
@@ -41,7 +41,7 @@ HOLDING_DAYS = 5
 CAPITAL = 100_000.0
 PER_TRADE = 10_000.0
 START_DATE = "2024-06-01"
-END_DATE = date.today().isoformat()
+END_DATE = market_today().isoformat()
 
 # Colors
 GREEN = "\033[32m"

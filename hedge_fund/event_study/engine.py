@@ -31,6 +31,7 @@ from datetime import date, datetime, timedelta
 
 import numpy as np
 
+from hedge_fund.clock import market_today
 from hedge_fund.data.protocol import DataClient
 from hedge_fund.data.models import EarningsRecord
 from hedge_fund.event_study.models import (
@@ -94,7 +95,7 @@ def compute_car(
     Returns:
         EventStudyResult with per-event CARs, aggregate stats, and skipped tickers.
     """
-    today = date.today().isoformat()
+    today = market_today().isoformat()
 
     # Fetch market (SPY) prices once — covers all tickers.
     # Start from 2023-01-01 to have enough history for any event's estimation window.
@@ -165,7 +166,7 @@ def _compute_ticker_events(
     # Latest event needs ~35 calendar days after for the post-event window.
     min_date = min(_parse_date(r.filing_date) for r in records)
     max_date = max(_parse_date(r.filing_date) for r in records)
-    today = date.today()
+    today = market_today()
     price_start = (min_date - timedelta(days=400)).isoformat()
     price_end = min(max_date + timedelta(days=35), today).isoformat()
 
